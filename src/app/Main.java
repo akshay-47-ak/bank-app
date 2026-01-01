@@ -32,7 +32,7 @@ public class Main {
             switch (choice){
 
                 case "1" ->openAccount(sc , bankService);
-                case "2" ->deposit(sc);
+                case "2" ->deposit(sc , bankService);
                 case "3" ->withdraw(sc);
                 case "4" ->transfer(sc);
                 case "5" ->statement(sc);
@@ -58,11 +58,21 @@ public class Main {
         System.out.println("Initial Deposit (optional, blank for 0): ");
         String amountStr = sc.nextLine().trim();
         Double inital = Double.valueOf(amountStr);
-
-        bankService.openAccount(name,email,type);
+      String accountNumber =  bankService.openAccount(name,email,type);
+        if(inital >0){
+          bankService.deposit(accountNumber,inital,"Initial Deposit");
+        }
+        System.out.println("Account Opened : "+accountNumber);
     }
 
-    private static void deposit(Scanner sc) {
+    private static void deposit(Scanner sc ,BankService bankService) {
+        System.out.println("AccountNumber: ");
+        String accountNumber = sc.nextLine().trim();
+        System.out.println("Amount: ");
+        Double amount = Double.valueOf(sc.nextLine().trim());
+        bankService.deposit(accountNumber,amount,"Deposit");
+        System.out.println("Deposited");
+
     }
 
     private static void withdraw(Scanner sc) {
