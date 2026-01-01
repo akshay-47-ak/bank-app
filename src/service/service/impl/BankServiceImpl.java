@@ -55,14 +55,39 @@ public class BankServiceImpl implements BankService {
         Account account = accountRepository.findByNumber(accountNumber)
                 .orElseThrow(()->new RuntimeException("Account Not Found: "));
 
-        if(account.getBalance().compareTo(amount)<0){
+        if(account.getBalance().compareTo(amount)<0)
             throw new RuntimeException("Insufficiant Balance");
-        }
+
 
         account.setBalance(account.getBalance() - amount);
         Transaction transaction = new Transaction(account.getAccountNumber(),
                 amount,UUID.randomUUID().toString(),note, Type.WITHDRAW,LocalDateTime.now());
         transactionRepository.add(transaction);
+    }
+
+    @Override
+    public void transfer(String fromAcc, String  tooAcc, Double amount, String note) {
+    if(fromAcc.equals(tooAcc))
+        throw new RuntimeException("Can't Tranfer to Your Own account");
+    Account Fromaccount = accountRepository.findByNumber(fromAcc)
+            .orElseThrow(()->new RuntimeException("Account Not Found: "));
+        Account Toaccount = accountRepository.findByNumber(tooAcc)
+                .orElseThrow(()->new RuntimeException("Account Not Found: "));
+
+        if(Fromaccount.getBalance().compareTo(amount)<0)
+            throw new RuntimeException("Insufficiant Balance");
+        Fromaccount.setBalance(Fromaccount.getBalance() - amount);
+        Toaccount.setBalance(Toaccount.getBalance() + amount);
+
+
+        transactionRepository.add(new Transaction( Fromaccount.getAccountNumber(),
+                amount,UUID.randomUUID().toString(),
+                note,Type.TRANSFER_OUT,LocalDateTime.now()));
+
+        transactionRepository.add(new Transaction( Toaccount.getAccountNumber(),
+                amount,UUID.randomUUID().toString(),
+                note,Type.TRANSFER_IN,LocalDateTime.now()));
+
     }
 
     private String getAccountNumber() {
