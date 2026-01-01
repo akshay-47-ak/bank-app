@@ -1,27 +1,17 @@
 package domain;
 
 public class Account {
+private String accountNumber;
+private  String customerId;
+private Double balance;
+private String accountType;
 
-    private String accountNO;
-    private String email;
-    private double balance;
-
-    public Account(String accountNO , String email, double balance){
-        this.accountNO = accountNO;
-        this.email = email;
+    public Account(String accountNumber, String customerId, Double balance, String accountType) {
+        this.accountNumber = accountNumber;
+        this.customerId = customerId;
         this.balance = balance;
+        this.accountType = accountType;
     }
 
-    public String getAccountNO() {
-        return accountNO;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
 
 }
