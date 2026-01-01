@@ -1,5 +1,8 @@
 package app;
 
+import service.BankService;
+import service.service.impl.BankServiceImpl;
+
 import java.util.Scanner;
 
 public class Main {
@@ -7,8 +10,9 @@ public class Main {
     static void main() {
 
         Scanner sc = new Scanner(System.in);
-
+        BankService bankService = new BankServiceImpl();
         boolean running = true;
+
         System.out.println("WELCOME TO BANK");
         while (running) {
             System.out.println("""
@@ -27,10 +31,52 @@ public class Main {
 
             switch (choice){
 
-                case "0" ->running=false;
+                case "1" ->openAccount(sc , bankService);
+                case "2" ->deposit(sc);
+                case "3" ->withdraw(sc);
+                case "4" ->transfer(sc);
+                case "5" ->statement(sc);
+                case "6" ->listAccounts(sc);
+                case "7" ->searchAccounts(sc);
+                case "0" -> running =false;
 
             }
         }
 
+    }
+
+    private static void openAccount(Scanner sc , BankService bankService) {
+        System.out.println("Customer Name : ");
+        String name = sc.nextLine().trim();
+
+        System.out.println("Customer Email : ");
+        String email = sc.nextLine().trim();
+
+        System.out.println("Account Type (SAVING/CURRENT): ");
+        String type = sc.nextLine().trim();
+
+        System.out.println("Initial Deposit (optional, blank for 0): ");
+        String amountStr = sc.nextLine().trim();
+        Double inital = Double.valueOf(amountStr);
+
+        bankService.openAccount(name,email,type);
+    }
+
+    private static void deposit(Scanner sc) {
+    }
+
+    private static void withdraw(Scanner sc) {
+    }
+
+    private static void transfer(Scanner sc) {
+    }
+
+    private static void statement(Scanner sc) {
+    }
+
+    private static void listAccounts(Scanner sc) {
+    }
+
+    private static void searchAccounts(Scanner sc) {
     }
 }
